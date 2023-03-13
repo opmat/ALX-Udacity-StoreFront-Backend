@@ -1,0 +1,11 @@
+# Ignore artifacts:
+build
+dist
+node_modules
+spec
+src/tests
+*.md
+
+package.json
+package-lock.json
+tsconfig.json

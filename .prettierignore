@@ -1,0 +1,10 @@
+# Ignore artifacts:
+build
+dist
+spec
+
+.eslintignore
+.gitignore
+.prettierignore
+
+*.md
