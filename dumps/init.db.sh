@@ -3,7 +3,7 @@ set -e
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "postgres" <<-EOSQL
     GRANT ALL PRIVILEGES ON DATABASE storefront_dev TO alxtest;
-    DROP DATABASE storefront_test IF EXISTS;
+    DROP DATABASE IF EXISTS storefront_test;
     CREATE DATABASE storefront_test;
     GRANT ALL PRIVILEGES ON DATABASE storefront_test TO alxtest;
     COMMENT ON DATABASE storefront_dev
