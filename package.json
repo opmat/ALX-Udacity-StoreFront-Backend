@@ -6,8 +6,12 @@
   "scripts": {
     "start": "node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "ENV=test && npx tsc && db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
-    "tsc": "tsc"
+    "test": "ENV=test && npx tsc && npm run docker-start && db-migrate --env test up && jasmine-ts && db-migrate db:drop test && npm run docker-stop",
+    "tsc": "tsc",
+    "lint": "npx eslint src --fix",
+    "prettier": "npx prettier src --write",
+    "docker-start": "docker-compose -f docker-compose.yml up",
+    "docker-stop": "docker-compose down --volumes"
   },
   "author": "Udacity",
   "license": "ISC",
@@ -28,9 +32,17 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.15.0",
     "@types/pg": "^7.14.7",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "jasmine": "^4.5.0",
     "jasmine-spec-reporter": "^7.0.0",
     "jasmine-ts": "^0.3.0",
+    "prettier": "^2.8.4",
+    "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
     "tsc-watch": "^4.2.9",
     "typescript": "^4.9.5"
