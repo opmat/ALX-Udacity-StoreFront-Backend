@@ -28,4 +28,20 @@ export class DashboardService {
       throw `An error occured ${err}: Unable to fetch Top ${limit} products`;
     }
   }
+
+  async orderProductList(orderID: number): Promise<ProductSold[]> {
+    try {
+      const conn = await Client.connect();
+      const sql = `SELECT p.id, p.product_name, p.price, p.category, od.quantity
+            FROM order_details od 
+            LEFT JOIN products p ON od.product_id = p.id
+            WHERE od.order_id=$1
+            ORDER BY product_name DESC`;
+      const result = await conn.query(sql, [orderID]);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw `An error occured ${err}: Unable to fetch Top products in Order ${orderID}`;
+    }
+  }
 }
