@@ -142,11 +142,11 @@ export class OrderStore {
     }
   }
 
-  async closeOrder(orderId: number): Promise<OrderDetails> {
+  async closeOrder(orderId: number): Promise<Order> {
     try {
       const conn = await Client.connect();
-      const sql = `UPDATE order_details SET order_status='complete' 
-                            WHERE order_id=$1 RETURNING *`;
+      const sql = `UPDATE orders SET order_status='complete' 
+                            WHERE id=$1 RETURNING *`;
       const results = await conn.query(sql, [orderId]);
       conn.release();
       return results.rows[0];
@@ -198,7 +198,7 @@ export class OrderStore {
   async showByStatus(ostatus: string): Promise<Order[]> {
     try {
       const conn = await Client.connect();
-      const sql = 'SELECT * FROM orders WHERE order_status=$1';
+      const sql = 'SELECT * FROM orders WHERE order_status::text=$1';
       const result = await conn.query(sql, [ostatus]);
       conn.release();
       return result.rows[0];

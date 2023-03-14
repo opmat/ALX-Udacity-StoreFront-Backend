@@ -196,7 +196,7 @@ describe('/orders ROUTE :: ', () => {
 
   it('Expects GET /:id endpoint call should return status 200 and order with ID=1 along with products in the cart', async () => {
     const result = await request.get('/orders/1/cart');
-    
+
     expect(result.status).toEqual(200);
     expect(result.body).toBeTruthy();
   });

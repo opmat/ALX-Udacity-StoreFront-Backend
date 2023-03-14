@@ -39,7 +39,7 @@ describe('/users ROUTE :: ', () => {
 
   it('Expects POST / (index) endpoint call to return status 200 and token', async () => {
     const response = await request.post('/users').send(testUser[0]);
-    
+
     expect(response.status).toEqual(200);
     expect(response.body).toBeTruthy();
     token = response.body.token;
@@ -49,7 +49,7 @@ describe('/users ROUTE :: ', () => {
     const result = await request
       .get('/users')
       .set('Authorization', `Bearer ${token}`);
-      
+
     expect(result.status).toEqual(200);
     expect(Object.keys(result.body).length).toEqual(1);
   });
@@ -58,7 +58,7 @@ describe('/users ROUTE :: ', () => {
     const response = await request.post('/users').send(conflictingUser);
 
     expect(response.status).toEqual(400);
-    expect(response.body).toEqual({ });
+    expect(response.body).toEqual({});
   });
 
   it('Expects POST / (index) endpoint call to return status 200 and token', async () => {
