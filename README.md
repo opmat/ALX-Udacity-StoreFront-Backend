@@ -1,54 +1,93 @@
 # Storefront Backend Project
 
+A simple API built with Node.JS, Typescript, and Express with PostgreSQL for basic shopping cart management.
+
+This project is based on the ALX Udacity Fullstack JS Course.
+
 ## Getting Started
 
 This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
+## Installation
+
+To get started, clone or downlad the repository and you can then install the project with yarn. You first `cd` into the repository directory and run `yarn` in your terminal at the project root.
+
+```bash
+  cd project-directory
+  yarn
+```
+
+Next, you setup your environment variables by duplicating the `.env.sample` file and rename it as `.env`. Check the Environment Variable section for more details.
+
+## Environment Variables
+
+To run this project, you are required to configure the environment variables for your application by duplicating the `.env.sample` file and rename it as `.env`. Variables available in the `.env.sample` file are shown below.
+
+```text
+ENV=test
+POSTGRES_HOST=localhost
+POSTGRES_PORT=54321 #must-match-forwarding-port-in-docker-compose-file
+POSTGRES_USER=your-postgres-username
+POSTGRES_PASSWORD=your-postgres-password
+POSTGRES_DB=storefront_dev #main-database-for-dev
+POSTGRES_DB_TEST=storefront_test #test-database
+BCRYPT_PASSWORD=something-not-easy-to-guess-or-imagine
+SALT_ROUNDS=10
+TOKEN_SECRET=shh-always-a-secret
+PGADMIN_DEFAULT_EMAIL=admin@test.com
+PGADMIN_DEFAULT_PASSWORD=t3sting
+SERVER_PORT=3000
+SERVER_ADDRESS=localhost
+```
+
+The `ENV` variable defines the environment in which you which to run the application and it can be `test`, `dev`, etc.
+All variables prefixed by `POSTGRES_` are used to define the PostgreSQL database parameters. Since the Postgres database is running in a docker container, the `docker-compose.yml` file contains information for setting up postgres including the forwarding port. The _default forwarding port_ used in the `docker-compose.yml` file is `54321`, which is then forwarded to the default postgres port `5432` in the container. Hence, it is safe to use `54321` as `POSTGRES_PORT`.
+
+Environment variables prefixed by `SERVER_` defines the express server parameter and can be adjusted accordingly.
+
+## Database Setup
+
+The postgreSQL database is designed to run as a service in a Docker container named `alxpostgresdb`. All information on the database setup is provided in the `docker-compose.yml` file.
+
+## Running the Application/Start-up scripts
+
+Some start-up scripts are included in the `package.json` file to run the application and other services including database setup and migration. Some of the scripts are highlighted below;
+
+### Running Test
+
+To run the test provided in the application, you are required to start up docker and then run the test using the following commands in your terminal
+
+```bash
+    npm run docker-start
+```
+
+Then to build and run the tests, run the following
+
+```bash
+  npm run test
+```
+
+### Running Application local
+
+To run the test provided in the application, you are required to start up docker and then run the server using the following commands in your terminal
+
+```bash
+    npm run docker-start
+```
+
+To run the server on development mode, run the following
+
+```bash
+  npm run watch
+```
+
+## Used Technologies
+
+The application uses the following libraries:
+
+- PostgreSQL for the database
 - Node/Express for the application logic
 - dotenv from npm for managing environment variables
 - db-migrate from npm for migrations
 - jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
-
-## Steps to Completion
-
-### 1. Plan to Meet Requirements
-
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
-
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
-
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
-
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
-
-### 2.  DB Creation and Migrations
-
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
-
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
-
-### 3. Models
-
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
-
-### 4. Express Handlers
-
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
-
-### 5. JWTs
-
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
-
-### 6. QA and `README.md`
-
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
-
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+- jasmine and supertest from npm for testing

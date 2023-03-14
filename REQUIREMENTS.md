@@ -5,38 +5,76 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+
+| Endpoint            | Verb | Token Required? | Description             |
+| ------------------- | ---- | :---: | ----------------------- |
+| /products/             | POST |  Yes   | Create a new product       |
+| /products/             | GET  |  No   | Get the list of all products           |
+| /products/:id | GET |  No   | Get a product by id    |
+| /products/category/:category          | GET  |  No   | Get product list by category |
+| /products/top/:limit?          | GET  |  No   | Get the list of Top _limit_ product by sales, where _limit_ is an integer and optional. _limit_ defaults to 5 |
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+
+| Endpoint            | Verb | Token Required? | Description             |
+| ------------------- | ---- | :---: | ----------------------- |
+| /users/             | POST |  No   | Create a new user       |
+| /users/             | GET  |  Yes   | Get the list of all users           |
+| /users/login | POST |  No   | Authenticates a user     |
+| /users/:id          | GET  |  Yes   | Get a user by id |
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+
+| Endpoint            | Verb | Token Required? | Description             |
+| ------------------- | ---- | :---: | ----------------------- |
+| /orders/             | POST |  Yes   | Create a new order       |
+| /orders/             | GET  |  No   | Get the list of all orders           |
+| /orders/:id          | GET  |  No   | Get a particular order by id |
+| /orders/:id/cart | GET |  No   | Get the Cart listing for a particular order with id     |
+| /orders/addproduct          | POST  |  Yes   | Add product item to an order |
+| /orders/close          | POST  |  Yes   | Close an order or set the status of the order as complete |
+| /user/:userid/active/:limit?          | GET  |  Yes   | Get a list of active order with size _limit_ for user with id _userid_. Where _limit_is optional and defaults to 1 |
+| /user/:userid/complete/:limit?          | GET  |  Yes   | Get a list of completed orders with size _limit_ for user with id _userid_. Where _limit_is optional and defaults to 5 |
 
 ## Data Shapes
-#### Product
--  id
-- name
-- price
-- [OPTIONAL] category
+The database design is as shown in the image below.
 
-#### User
-- id
-- firstName
-- lastName
-- password
+![App Screenshot](https://ffesongl.sirv.com/ALX%20Udacity%20Projects/Project%202%20-%20Storefront%20Backend/database%20schema.png)
 
-#### Orders
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+#### Product Table
 
+| Field Name | Data Type | Metadata                                            |
+| ---------- | --------- | --------------------------------------------------- |
+| id         | Integer   | primary key, auto-increment field     |
+| product_name | String (100)    | required, unique                                            |
+| price  | Float    | required                                            |
+| category   | String (100)   | optional                 |
+
+#### User Table
+
+| Field Name | Data Type | Metadata                                            |
+| ---------- | --------- | --------------------------------------------------- |
+| id         | Integer   | primary key, auto-increment field     |
+| first_name | String    | required                                            |
+| last_name  | String    | required                                            |
+| email   | String    | required, unique                 |
+| password_digest   | String    | required                         |
+| date_registered   | Timestamp with Timezone    | Defaule: current_timestamp AT TIME ZONE 'UTC'                         |
+
+#### Orders Table
+
+| Field Name | Data Type | Metadata                                            |
+| ---------- | --------- | --------------------------------------------------- |
+| id         | Integer   | primary key, auto-increment field |
+| user_id    | Integer   | required, references the id in the users table      |
+| order_status     | String    | required, can either be 'active' or 'complete', defaults to 'active'                      |
+| order_date   | Timestamp with Timezone    | Defaule: current_timestamp AT TIME ZONE 'UTC'                         |
+
+### Order_Details Table
+
+| Field Name | Data Type | Metadata                                            |
+| ---------- | --------- | --------------------------------------------------- |
+| id         | Integer   | primary key, auto-increment field |
+| order_id   | Integer   | required, references the id in the orders table     |
+| product_id | Integer   | required, references the id in the products table   |
+| quantity   | Integer   | required                                            |

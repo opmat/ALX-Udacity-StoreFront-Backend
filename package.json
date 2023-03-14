@@ -1,7 +1,7 @@
 {
   "name": "storefront_backend",
   "version": "0.1.0",
-  "description": "",
+  "description": "A storefront backend built in NodeJS and Express with PostgreSQL support",
   "main": "server.ts",
   "scripts": {
     "start": "node src/server.ts",
@@ -15,8 +15,22 @@
     "docker-cleanup": "docker-compose down --volumes",
     "test-migration-down": "db-migrate --env test down -c 10"
   },
-  "author": "Udacity",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opmat/ALX-Udacity-StoreFront-Backend.git"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "storefront",
+    "PostgreSQL"
+  ],
+  "author": "Opeyemi Emmanuel MATILUKO (OPMat)",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/opmat/ALX-Udacity-StoreFront-Backend/issues"
+  },
+  "homepage": "https://github.com/opmat/ALX-Udacity-StoreFront-Backend#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "body-parser": "^1.19.0",
