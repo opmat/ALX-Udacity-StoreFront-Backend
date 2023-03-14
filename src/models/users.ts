@@ -4,11 +4,14 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export type User = {
+export type BaseUser = {
   id?: number;
   firstname: string;
   lastname: string;
   email: string;
+};
+
+export type User = BaseUser & {
   password: string;
   date_registered?: Date;
 };
@@ -60,9 +63,13 @@ export class UserStore {
     }
   }
 
-  async authenticate(email: string, password: string): Promise<User | null> {
+  async authenticate(
+    email: string,
+    password: string
+  ): Promise<BaseUser | null> {
     const conn = await Client.connect();
-    const sql = 'SELECT password_digest FROM users WHERE email=($1)';
+    const sql =
+      'SELECT id, lastname, firstname, email, password_digest FROM users WHERE email=($1)';
 
     const result = await conn.query(sql, [email]);
 
@@ -70,7 +77,12 @@ export class UserStore {
       const user = result.rows[0];
       conn.release();
       if (bcrypt.compareSync(password + this.pepper, user.password_digest)) {
-        return user;
+        return {
+          id: user.id,
+          lastname: user.lastname,
+          firstname: user.firstname,
+          email: user.email
+        };
       }
     }
 

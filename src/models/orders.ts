@@ -24,7 +24,7 @@ export class OrderStore {
   async index(): Promise<Order[]> {
     try {
       const conn = await Client.connect();
-      const sql = 'SELECT * FROM order';
+      const sql = 'SELECT * FROM orders';
 
       const result = await conn.query(sql);
 
@@ -62,7 +62,7 @@ export class OrderStore {
     try {
       const conn = await Client.connect();
       //Confirm Order exist and it's active
-      let sql = 'SELECT * FROM orders WHERE id=$1 AND order_status="active"';
+      let sql = `SELECT * FROM orders WHERE id=$1 AND order_status='active'`;
       const result = await conn.query(sql, [orderId]);
       if (result.rows.length > 0) {
         //confirm if product already exist on order
@@ -139,6 +139,19 @@ export class OrderStore {
       throw new Error(
         `unable to remove product (${productId}) from order (${orderId}): ${err}`
       );
+    }
+  }
+
+  async closeOrder(orderId: number): Promise<OrderDetails> {
+    try {
+      const conn = await Client.connect();
+      const sql = `UPDATE order_details SET order_status='complete' 
+                            WHERE order_id=$1 RETURNING *`;
+      const results = await conn.query(sql, [orderId]);
+      conn.release();
+      return results.rows[0];
+    } catch (err) {
+      throw new Error(`unable to set order (${orderId}) to complete: ${err}`);
     }
   }
 

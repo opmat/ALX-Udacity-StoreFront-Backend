@@ -63,7 +63,7 @@ const getTopProducts = async (req: Request, res: Response) => {
   }
 };
 
-productRouter.post('/prduct', verifyToken, create);
+productRouter.post('/', verifyToken, create);
 productRouter.get('/', index);
 productRouter.get('/:id', show);
 productRouter.get('/category/:category', getProductByCategory);
