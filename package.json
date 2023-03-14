@@ -6,12 +6,14 @@
   "scripts": {
     "start": "node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "ENV=test && npx tsc && npm run docker-start && db-migrate --env test up && jasmine-ts && db-migrate db:drop test && npm run docker-stop",
+    "test": "ENV=test && npx tsc && db-migrate --env test up && jasmine --random=false && db-migrate --env test down -c 10",
     "tsc": "tsc",
     "lint": "npx eslint src --fix",
     "prettier": "npx prettier src --write",
     "docker-start": "docker-compose -f docker-compose.yml up",
-    "docker-stop": "docker-compose down --volumes"
+    "docker-stop": "docker-compose down",
+    "docker-cleanup": "docker-compose down --volumes",
+    "test-migration-down": "db-migrate --env test down -c 10"
   },
   "author": "Udacity",
   "license": "ISC",
