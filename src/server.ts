@@ -19,7 +19,9 @@ app.use('/orders', orderRouter);
 app.get('/', function (req: Request, res: Response) {
   res.send('Welcome!');
 });
-
+console.log(`WORKING ON starting app on: ${address}`);
 app.listen(process.env.SERVER_PORT, function () {
   console.log(`starting app on: ${address}`);
 });
+
+export default app;
