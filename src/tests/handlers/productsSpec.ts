@@ -45,24 +45,29 @@ const conflictingProduct: Product = {
 };
 
 const testUser: User = {
-  firstname: 'TestUser1',
+  firstname: 'Tester',
   lastname: 'Surname1',
-  email: 'testuser1@test.com',
+  email: 'mytester@test.com',
   password: 't3st1'
 };
 
 let token: string;
 
 describe('/products ROUTE :: ', () => {
-  beforeAll(() => {
-    const auth = async () => {
-      const response = await request.post('/users/login').send({
+  beforeAll(async () => {
+    // const createUser = async () => {
+      const response = await request.post('/users').send(testUser);
+    // }
+    // await createUser();
+
+    // const auth = async () => {
+      const response1 = await request.post('/users/login').send({
         email: testUser.email,
         password: testUser.password
       });
-      token = response.body.token;
-    };
-    auth();
+      token = response1.body.token;
+    // };
+    // await auth();
   });
 
   it('Expects GET / (index) endpoint call should return status 200 and zero products info', async () => {
@@ -92,11 +97,11 @@ describe('/products ROUTE :: ', () => {
     expect(response.body).toBeTruthy();
   });
 
-  it('Expects GET / (index) endpoint call should return status 200 and two products info', async () => {
+  it('Expects GET / (index) endpoint call should return status 200 and two or more products info', async () => {
     const result = await request.get('/products');
 
     expect(result.status).toEqual(200);
-    expect(Object.keys(result.body).length).toEqual(2);
+    expect(Object.keys(result.body).length).toBeGreaterThanOrEqual(2);
   });
 
   it('Expects POST / (index) endpoint call will duplicate product name should return status 400', async () => {

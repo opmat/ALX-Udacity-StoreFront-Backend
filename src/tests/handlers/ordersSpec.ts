@@ -93,27 +93,27 @@ const testUser: User = {
 let token: string;
 
 describe('/orders ROUTE :: ', () => {
-  beforeAll(() => {
-    function loadProducts() {
+  beforeAll(async () => {
+    // const loadProducts = () => {
       testProducts.forEach(async (item) => {
         const response = await request
           .post('/products')
           .send(item)
           .set('Authorization', `Bearer ${token}`);
       });
-    }
+    // }
 
-    const auth = async () => {
+    // const auth = async () => {
       const response = await request.post('/users/login').send({
         email: testUser.email,
         password: testUser.password
       });
       token = response.body.token;
-    };
-    auth();
+    // };
+    // await auth();
 
     //Load all Products for Test
-    loadProducts();
+    // loadProducts();
   });
 
   it('Expects GET / (index) endpoint call should return status 200 and zero order info', async () => {
